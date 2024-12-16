@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Whois</title>
+  <style>
+    body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  flex-direction: column;
+  font-family: Arial, sans-serif;
+  background: #f3f3f3;
+}
+.box {
+  width: 100px;
+  height: 100px;
+  background: url(https://vegas.nyc3.cdn.digitaloceanspaces.com/0100_w_sti/sticker-fan_15054211_o_38be980fb7517aba209b2eb4a3884611.webp)
+    no-repeat center center;
+  background-color: #cfcfcf;
+  background-size: cover;
+  cursor: pointer;
+  transform: scale(1);
+  transition: 0.15s;
+  border-radius: 10px;
+}
+.box.bounce {
+  /*animation: bounce 0.5s;*/
+  transform: scale(1.2);
+}
+.message {
+  margin-top: 20px;
+  font-size: 20px;
+  font-weight: bold;
+}
+.message-ending {
+  font-size: 20px;
+  font-weight: bold;
+  display: block;
+  margin: 0 0 10px 0;
+}
+.progress-bar-container {
+  width: 300px;
+  height: 30px;
+  border: 2px solid #000;
+  margin-top: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+.progress-bar {
+  height: 100%;
+  background-color: #9e9e9e;
+  width: 0;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-in-out;
+}
+.winner {
+  width: 150px;
+  height: 150px;
+  background: url(https://vegas.nyc3.cdn.digitaloceanspaces.com/0172_y_an_webp-m/sticker-fan_17016064_m.webp)
+    no-repeat center center;
+  background-size: cover;
+}
+  </style>
+</head>
+<body>
+  <p class="message">Para Brayan</p>
+<div class="box" id="box"></div>
+<p class="message">Haz clic en la imagen lo más rápido que puedas</p>
+<div class="progress-bar-container">
+  <div class="progress-bar" id="progress-bar"></div>
+</div>
+  <script>
+    const box = document.getElementById("box")
+const progressBar = document.getElementById("progress-bar")
+let clickCount = 0
+let decreaseInterval = null;
+const audio1 = new Audio("https://cdn.pixabay.com/audio/2024/02/02/audio_4cd56fad00.mp3");
+const audio2 = new Audio("https://cdn.pixabay.com/audio/2024/12/06/audio_057035a61c.mp3");
+
+const updateProgressBar = () => {
+  const progress = (clickCount / 50) * 100
+  progressBar.style.width = `${progress}%`
+
+  if (progress <= 33) {
+    progressBar.style.backgroundColor = "#f44336"
+    box.style.backgroundImage =
+      'url("https://vegas.nyc3.cdn.digitaloceanspaces.com/0100_w_sti/sticker-fan_15054211_o_38be980fb7517aba209b2eb4a3884611.webp")'
+  } else if (progress <= 70) {
+    progressBar.style.backgroundColor = "#ffc107"
+    box.style.backgroundImage =
+      'url("https://osaka.nyc3.cdn.digitaloceanspaces.com/G00_sl_png-a_1_webp-o/sticker-fan_11836922_o.webp")'
+  } else {
+    progressBar.style.backgroundColor = "#009688"
+    box.style.backgroundImage =
+      'url("https://linda.nyc3.cdn.digitaloceanspaces.com/384_sl3_png-a_6_webp-o/sticker-fan_12338901_o.webp")'
+  }
+}
+
+const decreaseProgressBar = () => {
+  if (clickCount > 0) {
+    clickCount--
+    updateProgressBar()
+  }
+}
+
+box.addEventListener("click", () => {
+
+  audio1.play();
+
+  if (!decreaseInterval) {
+    decreaseInterval = setInterval(decreaseProgressBar, 300)
+  }
+
+  clickCount++
+  updateProgressBar()
+  box.classList.add("bounce")
+  setTimeout(() => {
+    box.classList.remove("bounce")
+  }, 200)
+
+  if (clickCount >= 50) {
+    clearInterval(decreaseInterval)
+    document.body.innerHTML =
+      '<p class="message-ending">Has abierto la caja.</p><p class="message-ending">¡Feliz navidad y un próspero año nuevo!</p><p class="message-ending">Que este nuevo año se cumplan todas tus metas</p><div class="winner"></div>';
+audio1.volume = 0;
+      audio1.remove();
+      audio2.play();
+      
+  }
+});
+  </script>
+</body>
+</html>
